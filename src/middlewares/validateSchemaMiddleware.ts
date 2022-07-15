@@ -8,8 +8,12 @@ export default function validateSchema(schema: ObjectSchema) {
       return res.status(422).send({ error: validation.error.message });
     }
     
-    const user = validation.value;
-    res.locals.user = user;
+    const validatedSchema = validation.value;
+    res.locals.payload = {
+      ...res.locals.payload,
+      validSchema: validatedSchema,
+    };
+
     next();
   };
 }

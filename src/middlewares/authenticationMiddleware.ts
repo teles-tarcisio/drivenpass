@@ -14,7 +14,10 @@ export default async function ensureAuthentication(req: Request, res: Response, 
   
   const verifiedToken = await verifyToken(token);
   
-  res.locals.payload = { userAuthData: verifiedToken };
+  res.locals.payload = {
+    ...res.locals.payload,
+    userAuthData: verifiedToken,
+  };
   
   next();
 }
