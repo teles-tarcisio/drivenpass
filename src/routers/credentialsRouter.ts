@@ -14,4 +14,8 @@ credentialsRouter.post("/credentials/new",
   credentialsController.create,
 );
 
+credentialsRouter.get("/credentials/get",
+  credentialsController.get,
+);
+
 export default credentialsRouter;

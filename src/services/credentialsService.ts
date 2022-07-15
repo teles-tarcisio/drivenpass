@@ -1,40 +1,86 @@
 import {
   credentialsRepository,
-  userRepository,
+  //userRepository,
 } from "../repositories/index.js";
+import { userService } from "../services/index.js";
+import { Credential } from "@prisma/client";
 import { CreateCredential } from "../repositories/credentialsRepository.js";
 import {
   encryptString,
+  decryptString,
 } from "../utils/index.js";
 
-async function create(credentialData: CreateCredential) {
-  const existingUser = await userRepository.findById(credentialData.userId);
-  if (!existingUser) {
-    throw {
-      type: "not_found",
-      message: "user does not exist",
-    };
-  }
-
-  const sameTagCredentials = await credentialsRepository.findUserCredentialsWithTag(credentialData.tag, credentialData.userId);
+async function checkUniqueTag(tag: string, userId: number) {
+  const sameTagCredentials = await credentialsRepository.findUserCredentialsWithTag(tag, userId);
   if (sameTagCredentials.length > 0) {
     throw {
       type: "conflict",
       message: "credential tag already exists",
     };
   }
-  
-  // use cryptr for credentialPassword
+}
+
+async function decryptCredentialsPasswords(credentials: Credential[]) {
+  credentials.map(credential => (
+    credential.credentialPassword = decryptString(credential.credentialPassword))
+  );
+}
+
+async function create(credentialData: CreateCredential) {
+  await userService.userIdExists(credentialData.userId);
+
+  await checkUniqueTag(credentialData.tag, credentialData.userId);
+
   const encryptedPassword = encryptString(credentialData.credentialPassword);
-  
   credentialData.credentialPassword = encryptedPassword;
-  console.log("credential for db: ", credentialData);
 
   await credentialsRepository.insert(credentialData);
 }
 
+async function findUserCredentials(userId: number) {
+  await userService.userIdExists(userId);
+
+  const userCredentials = await credentialsRepository.findAllUserCredentials(userId);
+
+  decryptCredentialsPasswords(userCredentials);
+
+  return userCredentials;
+}
+
+async function credentialIdExists(credentialId: number) {
+  const credential = await credentialsRepository.findById(credentialId);
+  if (!credential) {
+    throw {
+      type: "not_found",
+      message: "credential id does not exist",
+    };
+  }
+
+  return credential;
+}
+
+async function findUserCredentialById(credentialId: number, userId: number) {
+  await userService.userIdExists(userId);
+
+  const foundCredential = await credentialIdExists(credentialId);
+
+  if (foundCredential.userId !== userId) {
+    throw {
+      type: "unauthorized",
+      message: "credential is not from this user",
+    };
+  }
+
+  const singleCredentialArray = [foundCredential];
+  decryptCredentialsPasswords(singleCredentialArray);
+
+  return singleCredentialArray;
+}
+
 const credentialsService = {
   create,
+  findUserCredentials,
+  findUserCredentialById,
 };
 
 export default credentialsService;

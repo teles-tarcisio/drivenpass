@@ -19,9 +19,27 @@ async function insert(credentialData: CreateCredential) {
   });
 }
 
+async function findAllUserCredentials(userId: number) {
+  return await prisma.credential.findMany({
+    where: {
+      userId: userId,
+    },
+  });
+}
+
+async function findById(credentialId: number) {
+  return await prisma.credential.findFirst({
+    where: {
+      id: credentialId,
+    },
+  });
+}
+
 const credentialsRepository = {
   insert,
   findUserCredentialsWithTag,
+  findAllUserCredentials,
+  findById,
 };
 
 export default credentialsRepository;
