@@ -1,12 +1,20 @@
 import { NextFunction, Request, Response } from "express";
+import { verifyToken } from "../utils/index.js";
 
-export default function ensureAuthentication(req: Request, res: Response, next: NextFunction) {
-  const userToken = req.headers?.authorization;
-  console.log(userToken);
+export default async function ensureAuthentication(req: Request, res: Response, next: NextFunction) {
+  const { authorization } = req?.headers;
+  if (!authorization) {
+    throw {
+      type: "unauthorized",
+      message: "undefined token",
+    };
+  }
   
-  //1 - verify jwt
-  //2 - userData em res.locals
+  const token = authorization.replace("Bearer ", "");
   
-  //3 - continue
+  const verifiedToken = await verifyToken(token);
+  
+  res.locals.payload = { userAuthData: verifiedToken };
+  
   next();
 }

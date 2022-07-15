@@ -1,8 +1,5 @@
 import { Router } from "express";
-import {
-  validateSchema,
-  ensureAuthentication,
-} from "../middlewares/index.js";
+import { validateSchema } from "../middlewares/index.js";
 import { newUserSchema } from "../schemas/newUserSchema.js";
 import { userController } from "../controllers/index.js";
 
@@ -16,13 +13,6 @@ userRouter.post("/sign-up",
 userRouter.post("/sign-in",
   validateSchema(newUserSchema),
   userController.login,
-);
-
-userRouter.get("/test-auth",
-  ensureAuthentication,
-  (req, res) => {
-    return res.status(501).send("authenticated?");
-  }
 );
 
 export default userRouter;
