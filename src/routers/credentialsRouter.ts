@@ -1,19 +1,17 @@
 import { Router } from "express";
 import {
-  //validateSchema,
+  validateSchema,
   ensureAuthentication,
 } from "../middlewares/index.js";
-//import { newUserSchema } from "../schemas/newUserSchema.js";
-//import { userController } from "../controllers/index.js";
+import { newCredentialSchema } from "../schemas/newCredentialSchema.js";
+import { credentialsController } from "../controllers/index.js";
 
 const credentialsRouter = Router();
 credentialsRouter.use(ensureAuthentication);
 
-credentialsRouter.get("/test-auth",
-  (req, res) => {
-    // após auth!!
-    return res.status(501).send("credentials");
-  }
+credentialsRouter.post("/credentials/new",
+  validateSchema(newCredentialSchema),
+  credentialsController.create,
 );
 
 export default credentialsRouter;
