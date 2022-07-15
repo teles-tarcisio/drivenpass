@@ -8,3 +8,11 @@ export async function create(req: Request, res: Response) {
 
   return res.status(201).send('new user succesfully created');
 }
+
+export async function login(req: Request, res: Response) {
+  const userData: NewUser = res.locals.user;
+
+  const token: string = await userService.login(userData);
+  
+  return res.status(200).send(token);
+}
