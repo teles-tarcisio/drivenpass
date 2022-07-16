@@ -35,11 +35,20 @@ async function findById(credentialId: number) {
   });
 }
 
+async function deleteById(credentialId: number) {
+  return await prisma.credential.delete({
+    where: {
+      id: credentialId,
+    },
+  });  
+}
+
 const credentialsRepository = {
   insert,
   findUserCredentialsWithTag,
   findAllUserCredentials,
   findById,
+  deleteById,
 };
 
 export default credentialsRepository;

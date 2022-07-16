@@ -18,4 +18,8 @@ credentialsRouter.get("/credentials/get",
   credentialsController.get,
 );
 
+credentialsRouter.delete("/credentials/:id",
+  credentialsController.exclude,
+);
+
 export default credentialsRouter;

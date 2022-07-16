@@ -77,10 +77,28 @@ async function findUserCredentialById(credentialId: number, userId: number) {
   return singleCredentialArray;
 }
 
+
+async function deleteUserCredentialById(credentialId: number, userId: number) {
+  await userService.userIdExists(userId);
+
+  const foundCredential = await credentialIdExists(credentialId);
+
+  if (foundCredential.userId !== userId) {
+    throw {
+      type: "unauthorized",
+      message: "credential is not from this user",
+    };
+  }
+
+  await credentialsRepository.deleteById(credentialId);  
+}
+
+
 const credentialsService = {
   create,
   findUserCredentials,
   findUserCredentialById,
+  deleteUserCredentialById,
 };
 
 export default credentialsService;

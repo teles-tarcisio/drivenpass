@@ -3,6 +3,7 @@ import { credentialsService } from "../services/index.js";
 import { Credential } from "@prisma/client";
 import { NewCredential, CreateCredential } from "../repositories/credentialsRepository.js";
 
+
 export async function create(req: Request, res: Response) {
   const newCredential: NewCredential = res.locals.payload.validSchema;
   const userId = parseInt(res.locals.payload.userAuthData.id);
@@ -26,8 +27,7 @@ export async function get(req: Request, res: Response) {
     foundCredentials = await credentialsService.findUserCredentials(userId);
 
     return res.status(200).send(foundCredentials);
-  }
-  else {
+  } else {
     const credentialId = parseInt(id as string);
     if (isNaN(credentialId)) {
       throw {
@@ -40,4 +40,22 @@ export async function get(req: Request, res: Response) {
 
     return res.status(200).send(foundCredentials);
   }
+}
+
+export async function exclude(req: Request, res: Response) {
+  const userId = parseInt(res.locals.payload.userAuthData.id);
+
+  const id = req.params?.id;
+  const credentialId = parseInt(id);
+  if (!id || isNaN(credentialId)) {
+    throw {
+      type: "unprocessable",
+      message: "credential id must be a valid number",
+    };
+  }
+
+  await credentialsService.deleteUserCredentialById(credentialId, userId);
+
+
+  return res.status(200).send('succesfully deleted credential');
 }
