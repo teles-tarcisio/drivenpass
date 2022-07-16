@@ -15,7 +15,7 @@ safeNotesRouter.post("/safenotes/new",
 );
 
 safeNotesRouter.get("/safenotes/get",
-  //safeNotesController.get,
+  safeNotesController.get,
 );
 
 safeNotesRouter.delete("/safenotes/:id",

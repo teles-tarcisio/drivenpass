@@ -19,9 +19,28 @@ async function insert(safeNoteData: CreateSafeNote) {
   });
 }
 
+async function findById(safeNoteId: number) {
+  return await prisma.safeNote.findFirst({
+    where: {
+      id: safeNoteId,
+    },
+  });
+}
+
+async function findAllUserSafeNotes(userId: number) {
+  return await prisma.safeNote.findMany({
+    where: {
+      userId,
+    },
+  });
+}
+
+
 const safeNotesRepository = {
   insert,
-  findUserNotesWithTitle,  
+  findUserNotesWithTitle,
+  findById,
+  findAllUserSafeNotes,
 };
 
 export default safeNotesRepository;
