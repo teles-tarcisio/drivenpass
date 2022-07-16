@@ -12,7 +12,6 @@ safeNotesRouter.use(ensureAuthentication);
 safeNotesRouter.post("/safenotes/new",
   validateSchema(newSafeNoteSchema),
   safeNotesController.create,
-  //parei aqui, falta testar criacao de notas
 );
 
 safeNotesRouter.get("/safenotes/get",
