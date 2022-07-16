@@ -39,5 +39,22 @@ export async function get(req: Request, res: Response) {
     foundSafeNotes = await safeNotesService.findUserSafeNoteById(safeNoteId, userId);
 
     return res.status(200).send(foundSafeNotes);
-  }  
+  }
+}
+
+export async function exclude(req: Request, res: Response) {
+  const userId = parseInt(res.locals.payload.userAuthData.id);
+
+  const id = req.params?.id;
+  const safeNoteId = parseInt(id);
+  if (!id || isNaN(safeNoteId)) {
+    throw {
+      type: "unprocessable",
+      message: "safenote id must be a valid number",
+    };
+  }
+
+  await safeNotesService.deleteUserSafeNoteById(safeNoteId, userId);
+
+  return res.status(200).send('successfully deleted safenote');
 }

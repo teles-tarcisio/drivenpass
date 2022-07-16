@@ -19,7 +19,7 @@ safeNotesRouter.get("/safenotes/get",
 );
 
 safeNotesRouter.delete("/safenotes/:id",
-  //safeNotesController.exclude,
+  safeNotesController.exclude,
 );
 
 export default safeNotesRouter;

@@ -35,12 +35,21 @@ async function findAllUserSafeNotes(userId: number) {
   });
 }
 
+async function deleteById(safeNoteId: number) {
+  return await prisma.safeNote.delete({
+    where: {
+      id: safeNoteId,
+    },
+  });
+}
+
 
 const safeNotesRepository = {
   insert,
   findUserNotesWithTitle,
   findById,
   findAllUserSafeNotes,
+  deleteById,
 };
 
 export default safeNotesRepository;

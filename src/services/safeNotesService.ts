@@ -56,11 +56,27 @@ async function findUserSafeNoteById(safeNoteId: number, userId: number) {
   return [foundSafeNote];
 }
 
+async function deleteUserSafeNoteById(safeNoteId: number, userId: number) {
+  await userService.userIdExists(userId);
+
+  const foundSafeNote = await safeNoteIdExists(safeNoteId);
+
+  if (foundSafeNote.userId !== userId) {
+    throw {
+      type: "unauthorized",
+      message: "safenote is not from this user",
+    };
+  }
+
+  await safeNotesRepository.deleteById(safeNoteId);
+}
+
 
 const safeNotesService = {
   create,
   findUserSafeNotes,
   findUserSafeNoteById,
+  deleteUserSafeNoteById,
 };
 
 export default safeNotesService;
