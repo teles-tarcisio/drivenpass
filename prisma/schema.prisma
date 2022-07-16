@@ -63,4 +63,7 @@ model Card {
   password       String
   isVirtual      Boolean
   type           CardType
+
+  @@unique([userId, tag], name: "userCards")
+  @@map("cards")
 }
