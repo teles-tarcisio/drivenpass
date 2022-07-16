@@ -1,7 +1,4 @@
-import {
-  credentialsRepository,
-  //userRepository,
-} from "../repositories/index.js";
+import { credentialsRepository } from "../repositories/index.js";
 import { userService } from "../services/index.js";
 import { Credential } from "@prisma/client";
 import { CreateCredential } from "../repositories/credentialsRepository.js";
