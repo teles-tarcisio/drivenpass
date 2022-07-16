@@ -17,6 +17,7 @@ model User {
   Credential Credential[]
   SafeNote   SafeNote[]
   Card       Card[]
+  Wifi       Wifi[]
 
   @@map("users")
 }
@@ -54,7 +55,7 @@ enum CardType {
 model Card {
   id             Int      @id @default(autoincrement())
   userId         Int
-  User           User     @relation(fields: [userId], references: [id])
+  user           User     @relation(fields: [userId], references: [id])
   tag            String
   cardNumber     String
   cardholderName String
@@ -66,4 +67,15 @@ model Card {
 
   @@unique([userId, tag], name: "userCards")
   @@map("cards")
+}
+
+model Wifi {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
+  tag      String
+  ssid     String
+  password String
+
+  @@map("wifinetworks")
 }
