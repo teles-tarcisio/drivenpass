@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx nodemon src/app.ts",
-    "build": "tsc",
+    "build": "tsc && prisma generate",
     "start": "node dist/src/app.js"
   },
   "keywords": [],
