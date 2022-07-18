@@ -12,7 +12,6 @@ wifiNetsRouter.use(ensureAuthentication);
 wifiNetsRouter.post("/wifinets/new",
   validateSchema(newWifiNetSchema),
   wifiNetsController.create,
-  // parei aqui no wifiNetsController
 );
 
 wifiNetsRouter.get("/wifinets/get",

@@ -15,7 +15,7 @@ export async function verifyToken(token: string) {
     const verifiedData = jwt.verify(token, secretKey);
     return verifiedData;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw {
       type: "unauthorized",
       message: "invalid or expired token",

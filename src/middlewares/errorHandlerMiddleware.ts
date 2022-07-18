@@ -10,7 +10,7 @@ function errorTypeToStatusCode(errorType: string) {
 }
 
 export default function errorHandler(err, req: Request, res: Response, next: NextFunction) {
-  console.log(err);
+  console.error(err);
   if(err.type) {
     return res.status(errorTypeToStatusCode(err.type)).send(err.message);
   }
