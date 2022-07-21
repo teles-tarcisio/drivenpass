@@ -1,17 +1,16 @@
 import { prisma } from "../src/database/dbConfig.js";
 
 async function main() {
-  /*
-  await prisma.item.createMany({
-    data: [
-      { name: "item01", price: 100 },
-      { name: "item02", price: 200 },
-      { name: "item02", price: 201 },
-      { name: "item03", price: 300 },
-    ],
-    skipDuplicates: true,
+  await prisma.user.upsert({
+    where: {
+      email: "000@mail.com",
+    },
+    update: {},
+    create: {
+      email: "000@mail.com",
+      password: "0123456789A",
+    },
   });
-  */
 }
 
 main().catch(err => {

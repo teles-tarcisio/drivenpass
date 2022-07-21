@@ -2,16 +2,17 @@
   "name": "projeto19-drivenpass",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/server.js",
   "type": "module",
   "scripts": {
     "prisma-dev-migrate": "npx prisma migrate dev",
     "prisma-deploy-migrate": "npx prisma migrate deploy",
     "prisma-generate": "npx prisma generate",
-    "dev": "npx nodemon src/app.ts",
+    "dev": "npx nodemon src/server.ts",
     "build": "tsc",
-    "start": "node dist/app.js",
-    "test": "dotenv -e .env.test prisma migrate dev && dotenv -e .env.test prisma db seed && cross-env NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -i"
+    "start": "node dist/server.js",
+    "test": "dotenv -e .env.test prisma migrate dev && dotenv -e .env.test prisma db seed && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -i",
+    "prisma-studio-test": "npx dotenv -e .env.test prisma studio"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -23,6 +24,7 @@
     "@prisma/client": "^4.0.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "cryptr": "^6.0.3",
     "dotenv": "^16.0.1",
     "dotenv-cli": "^6.0.0",
@@ -33,6 +35,7 @@
     "nodemon": "^2.0.19"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.3.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/cryptr": "^4.0.1",
