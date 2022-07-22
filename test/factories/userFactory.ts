@@ -3,22 +3,12 @@ import { prisma } from "../../src/database/dbConfig.js";
 import { NewUser } from "../../src/repositories/userRepository.js";
 
 
-function createUserData(): NewUser {
+function createUserData(passwordLength: number): NewUser {
   return {
     email: faker.internet.email(),
-    password: faker.internet.password(10),
+    password: faker.internet.password(passwordLength),
   };
 }
-
-
-
-
-
-
-
-
-
-
 
 
 const userFactory = {
